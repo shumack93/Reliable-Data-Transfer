@@ -60,11 +60,6 @@ class RDTLayer(object):
     # Manage Segment sending  tasks...
     def manageSend(self):
 
-        # You should pipeline segments to fit the flow-control window
-        # The flow-control window is the constant RDTLayer.FLOW_CONTROL_WIN_SIZE
-        # The maximum data that you can send in a segment is RDTLayer.DATA_LENGTH
-        # These constants are given in # characters
-
         # Variable to keep up with how many packets have been sent in a given call to manageSend()
         # to ensure more packets are not sent than what is allowed.
         packetsThisLoop = 0
@@ -85,10 +80,6 @@ class RDTLayer(object):
                 seg.setStartIteration(self.currentIteration)
                 packetsThisLoop += 1
 
-        # NOTE: I TRIED TO IMPLEMENT THE SLIDING WINDOW HERE WITH THE COMMENTED OUT IF STATEMENT,
-        # BUT IT CAUSED THE PROGRAM TO INFINITELY LOOP EVERY FEW RUNS. THEREFORE, SLIDING WINDOW
-        # DOES NOT WORK AND HAS NOT BEEN IMPLEMENTED.
-        # if len(sentPackets) < int(RDTLayer.FLOW_CONTROL_WIN_SIZE / RDTLayer.DATA_LENGTH):
         while packetsThisLoop < int(RDTLayer.FLOW_CONTROL_WIN_SIZE / RDTLayer.DATA_LENGTH):
             if self.fromIndex >= len(self.dataToSend):
                 break
